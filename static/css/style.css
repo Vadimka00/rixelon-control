@@ -1,0 +1,377 @@
+:root {
+    /* Цвета */
+    --primary-bg: linear-gradient(180deg, #0A081A 0%, #6C4AB6 100%);
+    --background: #0A0A0A;
+    --primary-color: #6C4AB6;
+    --secondary-color: #8D72E1;
+    --hover-color: #A3A1F6;
+    --text-primary: #FFFFFF;
+    --text-secondary: #E0E0E0;
+
+    /* Типографика */
+    --h1: clamp(1.75rem, 5vw + 0.5rem, 3rem);
+    --h2: clamp(1.5rem, 4vw + 0.5rem, 2.25rem);
+    --h3: clamp(1.25rem, 3.5vw + 0.5rem, 1.75rem);
+    --h4: clamp(1.125rem, 3vw + 0.5rem, 1.5rem);
+    --p: clamp(0.875rem, 2.5vw + 0.25rem, 1.125rem);
+
+    /* Отступы */
+    --gap-sm: clamp(0.5rem, 1vw, 1rem);
+    --gap-md: clamp(1rem, 2vw, 1.5rem);
+    --gap-lg: clamp(1.5rem, 3vw, 2.5rem);
+
+    /* Размеры */
+    --card-min-width: min(90vw, 400px);
+    --card-min-height: min(80vh, 500px);
+    --button-min-height: clamp(3.125rem, 8vh, 3.75rem);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    background-image: var(--primary-bg), url('/static/images/bg/grid-bg.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-blend-mode: soft-light;
+    color: var(--text-primary);
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Типографика */
+h1, h2, h3, h4 {
+    line-height: 1.2;
+    margin-bottom: var(--gap-sm);
+}
+
+h1 {
+    font-family: "Krona One", sans-serif;
+    font-weight: 400;
+    font-size: var(--h1);
+    color: var(--secondary-color);  
+}
+
+h2 {
+    font-family: "Exo 2", sans-serif;
+    font-size: var(--h2);
+}
+
+h3 {
+    font-family: "Krona One", sans-serif;
+    font-size: var(--h3);
+    color: var(--secondary-color); 
+}
+
+h4 {
+    font-family: "Exo 2", sans-serif;
+    font-size: var(--h4);
+}
+
+p {
+    font-size: var(--p);
+    color: var(--text-secondary);
+}
+
+a {
+    color: var(--text-primary);
+    background-color: var(--primary-color);
+    text-decoration: none;
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+a:hover {
+    box-shadow: 0 0.5rem 1rem color-mix(in srgb, var(--primary-color) 25%, transparent);
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.second-text {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: var(--h4);
+}
+
+/* Layout */
+.main {
+    flex: 1;
+    padding: var(--gap-md);
+    display: flex;
+    flex-direction: column;
+}
+
+.head-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap-sm);
+    text-align: center;
+}
+
+.cards-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--card-min-width), 1fr));
+    gap: var(--gap-lg);
+    margin-top: var(--gap-lg);
+    place-items: center;
+    padding: var(--gap-md) 0;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    min-height: var(--card-min-height);
+    background-color: #211839;
+    padding: var(--gap-md);
+    border: 2px solid var(--primary-color);
+    border-radius: 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+.card:nth-child(1), .card:nth-child(3) {
+    justify-content: center;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1.5rem var(--primary-color);
+}
+
+.card img {
+    width: clamp(60px, 10vw, 100px);
+    height: auto;
+    aspect-ratio: 1/1;
+}
+
+.card-content, .text-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+    width: 100%;
+}
+
+/* Кнопки */
+button {
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color);
+    width: 100%;
+    min-height: var(--button-min-height);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: var(--p);
+    font-family: "Inter", sans-serif;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    padding: 0 var(--gap-md);
+    -webkit-tap-highlight-color: transparent; /* Убирает подсветку на мобильных */
+    outline: none; /* Убирает контур при фокусе */
+}
+
+button:hover {
+    transform: translateY(-0.5rem);
+    box-shadow: 0 0.5rem 1rem color-mix(in srgb, var(--primary-color) 25%, transparent);
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:active {
+    transform: translateY(-0.2rem);
+    background-color: var(--hover-color);
+    color: var(--primary-color);
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Футер */
+footer {
+    padding: var(--gap-md);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.auth-container {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0a081abc;
+    z-index: 1000;
+    
+    /* Начальное состояние */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.3s ease;
+}
+
+.auth-container.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.auth-content {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    width: 100%;
+    gap: 20px;
+    background-color: #211839;
+    padding: var(--gap-md);
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0.5rem 1rem color-mix(in srgb, var(--primary-color) 25%, transparent);
+    border-radius: 20px;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    gap: 10px;
+}
+
+input {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background: var(--background);
+    font-family: "Exo 2", sans-serif;
+    font-size: 1.3em;
+    color: var(--text-secondary);
+    height: 60px;
+    border-radius: 10px;
+    padding-left: 10px;
+}
+
+.reg-content {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    gap: 20px;
+    background-color: #211839;
+    padding: var(--gap-md);
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0.5rem 1rem color-mix(in srgb, var(--primary-color) 25%, transparent);
+    border-radius: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease 0.1s; /* Задержка 0.1s */
+}
+
+.reg-content.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.code-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    gap: 10px;
+}
+
+.code-inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.code-inputs input {
+    padding: 0;
+    text-align: center;
+    font-size: 2em;
+    max-width: 50px;
+}
+
+.code-digit {
+    transition: border-color 0.3s ease;
+}
+
+.code-digit.active {
+    border: 2px solid var(--primary-color);
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+.shake-animation {
+    animation: shake 0.4s ease-in-out;
+}
+
+.auth-button {
+    display: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.auth-button.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .cards-content {
+        grid-template-columns: 1fr;
+        margin-top: var(--gap-md);
+    }
+    
+    .card {
+        max-width: 100%;
+    }
+
+    /* Меняем порядок карточек */
+    .card:nth-child(1) {
+        order: 2;
+    }
+    .card:nth-child(2) {
+        order: 1;
+    }
+    .card:nth-child(3) {
+        order: 3;
+    }
+
+    .auth-content {
+        width: 90vw;
+    }
+}
+
+

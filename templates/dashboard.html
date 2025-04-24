@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Тоекн для генерации скрытых полей ввода  -->
+    <meta name="csrf-token" content="{{ csrf_token() }}"> 
+    <link rel="icon" href="static/images/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Fira+Code:wght@300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Krona+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>RIXELON CONTROL</title>
+</head>
+<body>
+
+  <div class="friends-list-container">
+    <div class="friends-block">
+      <div class="search-wrapper">
+        <div class="friends-header">
+          <button class="close-task-block" onclick="friendsCloseContainer()"><i class="fa-solid fa-xmark"></i></button>
+          <div class="search-box">
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Поиск по имени или username..."
+              oninput="searchFriends()"
+            />
+          </div>
+        </div>
+        <div id="searchResults" class="search-results"></div>
+      </div>
+      <h1>Твои друзья</h1>
+      <div class="friends-container" id="friendsContainer">
+        <ul>
+          <p>Список пуст</p>
+          <li class="friend">
+            <div class="friend-avatar">
+              <img src="{{ user.photo }}" alt="" srcset="">
+            </div>
+            <div class="friend-name">
+              <span>Вадим Симоненков</span>
+              <span class="friend-username">@vadimbuss</span>
+            </div>
+          </li>
+          <li class="friend end">
+            <div class="friend-avatar">
+              <img src="{{ user.photo }}" alt="" srcset="">
+            </div>
+            <div class="friend-name">
+              <span>Вадим Симоненков</span>
+              <span class="friend-username">@vadimbuss</span>
+            </div>
+            <button class="friend-request">Отправлено</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Добавить задачу контейнер-->
+  <div class="add-task-container">
+        <!-- Добавить задачу -->
+         <div class="add-task-block">
+            <div class="add-task-header">
+              <button class="close-task-block" onclick="taskCloseContainer()"><i class="fa-solid fa-xmark"></i></button>
+              <h2>Добавить задчу</h2>
+              <div>
+                <button class="fake-button"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+            </div>
+            <!-- Выбор даты -->
+            <div class="calendar-container">
+              <div class="calendar-header">
+                <button class="prev-month"><i class="fa-solid fa-chevron-left"></i></button>
+                <h3 class="current-month"></h3>
+                <button class="next-month"><i class="fa-solid fa-chevron-right"></i></button>
+              </div>
+              <div class="calendar-grid">
+                <div class="calendar-toggle">
+                  <button id="toggleViewBtn">Показать неделю</button>
+                </div>
+                <div class="weekdays">
+                  <span>Пн</span>
+                  <span>Вт</span>
+                  <span>Ср</span>
+                  <span>Чт</span>
+                  <span>Пт</span>
+                  <span>Сб</span>
+                  <span>Вс</span>
+                </div>
+                <div class="days"></div>
+                <span class="add-menu-text" id="toggleTaskFormBtn">Добавить</span>
+              </div>
+            </div>
+            <div class="task-from-content" id="task-form-content" style="display: none;">
+              <div class="task-form">
+                <div class="form-row">
+                  <div class="time-el">
+                      <label for="time-start">Начало</label>
+                      <div class="time-input">
+                          <input type="text" placeholder="00:00" class="time-input-field" id="time-start" readonly>
+                          <div class="time-picker" id="time-start-picker">
+                              <!-- Опции времени будут добавлены через JavaScript -->
+                          </div>
+                      </div>
+                  </div>
+                  <div class="time-el">
+                      <label for="time-end">Конец</label>
+                      <div class="time-input">
+                          <input type="text" placeholder="01:00" class="time-input-field" id="time-end"  readonly>
+                          <div class="time-picker" id="time-end-picker">
+                              
+                          </div>
+                      </div>
+                  </div>
+                  <div class="category-el">
+                    <label for="category-select">Категория</label>
+                    <div class="select-header">
+                      <span>Категория</span>
+                    </div>
+                    <div class="select-options">
+                        <div class="option">Работа</div>
+                        <div class="option">Учеба</div>
+                        <div class="option">Дом</div>
+                        <div class="option">Здоровье</div>
+                        <div class="option">Встреча</div>
+                        <div class="option">Хобби</div>
+                        <div class="option">Сон</div>
+                    </div>
+                  </div>
+                  <div class="friend-el">
+                    <label for="friend-select">Вместе с</label>
+                    <div class="friend-input">
+                      <input class="friend-select" placeholder="Выбери друга" type="text" name="friend-select" id="friend-select" readonly>
+                      <div class="friend-picker" id="friend-picker">
+                        <ul class="friends-list">
+                          <li class="friends">
+                            <div class="friend-name">${friend.name}
+                            </div>
+                          </li>
+                        </ul> <!-- Сюда добавляем друзей -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+      
+                <textarea placeholder="Описание задачи" required></textarea>
+          
+                <button class="create-tasks-btn" disabled>
+                  <i class="fa-solid fa-plus"></i> Добавить
+                </button>
+              </div>
+            </div>
+            <div class="tasks-container">
+              <div class="task-conten">
+                <ul class="tasks-list">
+                  <p>Список задач пуст</p>
+                  <li class="task-list">
+                    <div class="task-main">
+                      <div class="time">
+                        <span class="time-start">17:00</span>
+                        <span class="time-end">18:00</span>
+                      </div>
+                      <div class="task-status study">
+                        <p class="task-filter">Учёба</p>
+                      </div>
+                      <span class="title">Встреча с командойВстреча с командой Встреча с командой Встреча с командой</span>
+                    </div>
+                  </li>
+                  <li class="task-list">
+                    <div class="task-main">
+                      <div class="time">
+                        <span class="time-start">17:00</span>
+                        <span class="time-end">18:00</span>
+                      </div>
+                      <div class="task-status work">
+                        <i class="fa-solid fa-user-group" title="Совместная задача"></i>
+                        <p class="task-filter">Работа</p>
+                      </div>
+                      <span class="title">Встреча с командойВстреча с командой Встреча с командой Встреча с командой</span>
+                    </div>
+                    <div class="task-collaborator-content">
+                      <div class="task-collaborator">
+                        <div class="collaborator-avatar">
+                          <img src="{{ user.photo }}" alt="" srcset="">
+                        </div>
+                        <div class="collaborator-name">
+                          Вадим
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="task-list end">
+                    <div class="task-main">
+                      <div class="time">
+                        <span class="time-start">17:00</span>
+                        <span class="time-end">18:00</span>
+                      </div>
+                      <div class="task-status status">
+                      </div>
+                      <span class="title">Встреча с командойВстреча с командой Встреча с командой Встреча с командой</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+         </div>
+  </div>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar expanded" onclick="toggleSidebar()">
+      <div class="profile">
+        <div class="avatar">
+          <img src="{{ user.photo }}" alt="" srcset="">
+        </div>
+        <div class="name">
+          {{ user.first_name }}{% if user.last_name %} {{ user.last_name }}{% endif %}
+        </div>
+        <div class="username">@<span>{{ user.telegram_username }}</span></div>
+      </div>
+      <nav class="menu">
+        <div class="menu-item">
+          <i class="fa-solid fa-user"> <button class="button-item"><span class="text">Профиль</span></button> </i>
+        </div>
+        <div class="menu-item">
+          <i class="fa-solid fa-house"><button class="button-item"><span class="text">Главная</span></button></i>
+        </div>
+        <div class="menu-item">
+          <i class="fa-solid fa-user-group" onclick="friendsOpenContainer()"><button class="button-item"><span class="text">Друзья</span></button></i>
+        </div>
+        {% if role == 'owner' %}
+        <div class="menu-item">
+          <i class="fa-solid fa-crown"><button class="button-item"><span class="text">Админка</span></button></i>
+        </div>
+        {% endif %}
+        <div class="menu-item logout-icon-sidebar">
+          <i class="fa-solid fa-right-from-bracket"><button class="button-item logout-now"><span class="text">Выйти</span></button></i>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <div class="topbar">
+        <button class="burger-menu" onclick="toggleSidebar()">
+          <span></span>
+        </button>
+        <button class="notif-btn" onclick="toggleNotification()">
+          <i class="fa-solid fa-bell pulsing"></i>
+          <span class="notif-badge">{{ count_notif }}</span>
+        </button>
+        <button class="logout-icon logout-now"> <i class="fa-solid fa-right-from-bracket"></i> Выйти</button>
+      </div>
+
+      <div class="notification-container">
+        <div class="notification-header">
+          <button class="notif-close-btn" onclick="closeNotification()"><i class="fa-solid fa-arrow-right"></i></button>
+          <h2>Уведолмения</h2>
+        </div>
+        <div class="notif-content" id="notif-content">
+        </div>
+      </div>
+
+      <section class="calendar">
+        <header class="header">
+          <h1>Календарь задач</h1>
+          <button class="add-task-btn" onclick="taskAddContainer(this)">+ Добавить задачу</button>
+        </header>
+
+        <div class="task-category">
+          <div class="category work">
+            <h2 class="text-category">Работа</h2>
+          </div>
+          <div class="category study">
+            <h2 class="text-category">Учёба</h2>
+          </div>
+          <div class="category home">
+            <h2 class="text-category">Домашние дела</h2>
+          </div>
+          <div class="category health">
+            <h2 class="text-category">Здоровье</h2>
+          </div>
+          <div class="category social">
+            <h2 class="text-category">Встречи</h2>
+          </div>
+          <div class="category hobby">
+            <h2 class="text-category">Хобби</h2>
+          </div>
+          <div class="category sleep">
+            <h2 class="text-category">Сон</h2>
+          </div>
+        </div>
+
+        <div class="calendar-controls">
+          <button class="prev-month" id="prev-month">&lsaquo;</button>
+          <h1 id="current-month"></h1>
+          <button class="next-month" id="next-month">&rsaquo;</button>
+        </div>
+
+        <div class="calendar-grid-main" id="calendar-grid">
+          <div class="month">
+            
+          </div>
+      </section>
+    </main>
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="static/js/logout.js"></script>
+  <script src="static/js/dynamic-calendar.js"></script>
+  <script src="static/js/add-task-calendar.js"></script>
+  <script src="static/js/search-friends.js"></script>
+  <script src="static/js/add-task-form.js"></script>
+  <script src="static/js/friends-list.js"></script>
+  <script src="static/js/dynamic-friends.js"></script>
+  <script src="static/js/notification.js"></script>
+  <script src="static/js/select-time.js"></script>
+  <script>
+
+    const sidebar = document.querySelector('.sidebar');
+      const calendar = document.querySelector('.calendar');
+
+      // Наблюдатель за изменениями класса sidebar
+      const observer = new MutationObserver(() => {
+        calendar.classList.toggle('sidebar-collapsed', sidebar.classList.contains('collapsed'));
+      });
+
+      observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const notificationContainer = document.querySelector('.notification-container');
+  
+      // Если ширина экрана ≤ 799px — показываем как выпадающее меню
+      if (window.innerWidth <= 799) {
+        if (notificationContainer.classList.contains('collapsed')) {
+          return;
+        } else {
+          document.querySelector('.burger-menu').classList.toggle('active');
+          sidebar.classList.toggle('active');
+        }
+      } else {
+        // Иначе — обычное сворачивание
+        sidebar.classList.toggle('collapsed');
+      }
+    }
+
+    function toggleNotification() {
+      document.querySelector('.notification-container').classList.toggle('collapsed');
+      document.querySelector('.notif-btn').classList.toggle('active');
+      const sidebar = document.querySelector('.sidebar');
+  
+      // Если ширина экрана ≤ 799px
+      if (window.innerWidth <= 799) {
+        document.querySelector('.burger-menu').classList.remove('active');
+        sidebar.classList.remove('active');
+      }
+      notificationList();
+    }
+
+    function closeNotification() {
+      document.querySelector('.notification-container').classList.toggle('collapsed');
+      document.querySelector('.notif-btn').classList.toggle('active');
+      const sidebar = document.querySelector('.sidebar');
+  
+      // Если ширина экрана ≤ 799px
+      if (window.innerWidth <= 799) {
+        document.querySelector('.burger-menu').classList.remove('active');
+        sidebar.classList.remove('active');
+      }
+    }
+
+    function taskCloseContainer() {
+      const container = document.querySelector('.add-task-container');
+      container.style.display = 'none';
+      container.style.position = 'absolute';
+
+      document.body.style.overflowY = 'auto';
+    }
+
+    function friendsCloseContainer() {
+      const container = document.querySelector('.friends-list-container');
+      container.style.display = 'none';
+      container.style.position = 'absolute';
+
+      document.body.style.overflowY = 'auto';
+    }
+
+    document.querySelector('.select-header').addEventListener('click', function() {
+    const options = document.querySelector('.select-options');
+    options.style.display = options.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.querySelectorAll('.option').forEach(option => {
+        option.addEventListener('click', function() {
+            // 1. Меняем текст выбранной категории
+            document.querySelector('.select-header span').textContent = this.textContent;
+            
+            // 2. Закрываем dropdown
+            document.querySelector('.select-options').style.display = 'none';
+            
+            // 3. Сбрасываем активное состояние у всех .time-picker
+            document.querySelectorAll('.time-picker').forEach(p => p.classList.remove('active'));
+            
+        });
+    });
+
+    // Закрываем select-options при клике в любом месте документа
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.select-header') && !e.target.closest('.select-options')) {
+            document.querySelector('.select-options').style.display = 'none';
+        }
+    });
+
+    document.querySelectorAll('.task-form textarea').forEach(textarea => {
+        const minHeight = 40; // Минимальная высота (px)
+        
+        const adjustHeight = () => {
+            textarea.style.height = `${minHeight}px`;
+            const isContentEmpty = textarea.value.trim() === '';
+            textarea.style.height = isContentEmpty 
+                ? `${minHeight}px` 
+                : `${Math.max(minHeight, textarea.scrollHeight)}px`;
+        };
+
+        textarea.addEventListener('input', adjustHeight);
+        adjustHeight(); // Инициализация при загрузке
+    });
+
+  </script>
+  
+
+</body>
+</html>
